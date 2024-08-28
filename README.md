@@ -73,3 +73,20 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+
+## START LEARNING NEST JS
+
+# install nest js
+npm i @nestjs/cli
+nest --version    // this is for checking that nest has been succesfully installed or not
+nest new project-name   // for creating default project structure in nest
+
+# start server 
+default port for nest cli is 3000.
+for server start, npm run start
+for auto start server on save, npm run start:dev   
+ // This above command will watch your files, automatically recompiling and reloading the server.
+
+
