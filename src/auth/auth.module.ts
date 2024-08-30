@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthMiddleware } from './auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constant';
+import { DatabaseService } from 'src/database/database.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { jwtConstants } from './constant';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [DatabaseService, AuthService],
   exports: [AuthService],
 })
 export class AuthModule implements NestModule {
