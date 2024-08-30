@@ -90,3 +90,15 @@ for auto start server on save, npm run start:dev
  // This above command will watch your files, automatically recompiling and reloading the server.
 
 
+id
+fname
+lname
+email
+password
+dob
+gender
+phone_no
+hobby
+city
+
+profile_picture
