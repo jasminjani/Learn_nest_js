@@ -57,7 +57,7 @@ export class AuthService {
 
   async findUser(email: string) {
     return await this.databaseService.query(
-      'SELECT * FROM users WHERE email = ?',
+      'SELECT * FROM users WHERE email = ? AND isDeleted = 0',
       [email],
     );
 

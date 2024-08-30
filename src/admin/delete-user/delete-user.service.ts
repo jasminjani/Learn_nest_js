@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
-export class FindUserService {
+export class DeleteUserService {
   constructor(private databaseService: DatabaseService) {}
 
-  async findAllUsers() {
+  async deleteUserById(userId: number) {
     return await this.databaseService.query(
-      'SELECT * FROM users WHERE isDeleted = 0',
+      'UPDATE users SET isDeleted = 1 WHERE id = ?',
+      [userId],
     );
   }
 }
