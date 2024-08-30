@@ -7,8 +7,8 @@ import {
 @Injectable()
 export class AdminMiddleware implements NestMiddleware {
   use(req: any, res: any, next: (error?: any) => void) {
-    console.log('Admin middleware');
-    if (!req.jwt_token || req.user.role !== 'admin') {
+    console.log('Admin middleware', req.user?.role);
+    if (!req.cookies?.jwt_token) {
       throw new UnauthorizedException();
     }
     next();

@@ -12,7 +12,7 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const user = await this.authService.validateUser(
-      signInDto.userName,
+      signInDto.email,
       signInDto.password,
     );
 
