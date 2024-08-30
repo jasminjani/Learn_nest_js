@@ -6,7 +6,7 @@ import { Response } from 'express';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post()
+  @Post('login')
   async userSignIn(
     @Body() signInDto: Record<string, any>,
     @Res() res: Response,
@@ -34,5 +34,12 @@ export class AuthController {
       .json({
         user: user,
       });
+  }
+
+  @Post('logout')
+  async userLogOut(@Res() res: Response) {
+    return res.clearCookie('jwt_token').json({
+      message: 'User Logout successfully',
+    });
   }
 }
