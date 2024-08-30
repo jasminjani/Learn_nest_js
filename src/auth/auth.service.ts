@@ -1,32 +1,35 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private readonly databaseService: DatabaseService,
+  ) {}
 
-  private readonly users = [
-    {
-      userId: 1,
-      userName: 'john',
-      password: 'John@1234',
-    },
-    {
-      userId: 2,
-      userName: 'shraddha',
-      password: 'Shradhha@1234',
-    },
-  ];
+  // private readonly users = [  // this is static users details
+  //   {
+  //     userId: 1,
+  //     userName: 'john',
+  //     password: 'John@1234',
+  //   },
+  //   {
+  //     userId: 2,
+  //     userName: 'shraddha',
+  //     password: 'Shradhha@1234',
+  //   },
+  // ];
 
   async userSignIn(username: string, pass: string) {
-    const user = this.findUser(username);
-
+    const user = await this.findUser(username);
     // if (user?.length < 1) {
     //   throw new BadRequestException();
     // }
 
-    if (user?.password === pass) {
-      const payload = { sub: user.userId, username: user.userName };
+    if (user[0]?.password === pass) {
+      const payload = { sub: user[0].userId, username: user[0].userName };
       // return { access_token: await this.jwtService.signAsync(payload) };
       const jwt_token = await this.jwtService.signAsync(payload);
 
@@ -36,7 +39,12 @@ export class AuthService {
     }
   }
 
-  findUser(username: string) {
-    return this.users.find((user) => user.userName === username);
+  async findUser(username: string) {
+    return await this.databaseService.query(
+      'SELECT * FROM users WHERE name = ?',
+      [username],
+    );
+
+    // return users.find((user) => user.userName === username);   // finding matching username from static users
   }
 }
