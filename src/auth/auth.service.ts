@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DatabaseService } from 'src/database/database.service';
 
@@ -23,12 +27,15 @@ export class AuthService {
   // ];
 
   async userSignIn(username: string, pass: string) {
+    // console.log('username :>> ', username);
     const user = await this.findUser(username);
-    // if (user?.length < 1) {
-    //   throw new BadRequestException();
-    // }
+    // console.log('user :>> ', user);
 
-    if (user[0]?.password === pass) {
+    if (user?.length < 1) {
+      throw new BadRequestException();
+    }
+
+    if (user && user[0]?.password === pass) {
       const payload = { sub: user[0].userId, username: user[0].userName };
       // return { access_token: await this.jwtService.signAsync(payload) };
       const jwt_token = await this.jwtService.signAsync(payload);
