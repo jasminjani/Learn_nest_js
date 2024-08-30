@@ -102,3 +102,5 @@ hobby
 city
 
 profile_picture
+
+admin.middleware ma jo req.user.role admin na hoi to pan unauthorize ni error throw karavani chhe.

@@ -16,25 +16,29 @@ export class AuthService {
   // private readonly users = [  // this is static users details
   //   {
   //     userId: 1,
-  //     userName: 'john',
+  //     email: 'john',
   //     password: 'John@1234',
   //   },
   //   {
   //     userId: 2,
-  //     userName: 'shraddha',
+  //     email: 'shraddha',
   //     password: 'Shradhha@1234',
   //   },
   // ];
 
-  async validateUser(username: string, pass: string) {
-    const user = await this.findUser(username);
+  async validateUser(email: string, pass: string) {
+    const user = await this.findUser(email);
 
     // if (user?.length < 1) {
     //   throw new BadRequestException('Invalide credential');
     // }
 
-    if (user?.length && user[0]?.password === pass) {
-      // const payload = { sub: user[0].userId, username: user[0].userName };
+    if (
+      user?.length &&
+      user[0]?.password === pass &&
+      user[0].role === 'admin'
+    ) {
+      // const payload = { sub: user[0].userId, email: user[0].email };
       // const jwt_token = await this.jwtService.signAsync(payload);
       // return { message: 'User Login Successfully', jwt_token };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -47,16 +51,16 @@ export class AuthService {
   }
 
   async generateJwtToken(user: any) {
-    const payload = { sub: user.userId, username: user.userName };
+    const payload = { sub: user.userId, email: user.email };
     return await this.jwtService.signAsync(payload);
   }
 
-  async findUser(username: string) {
+  async findUser(email: string) {
     return await this.databaseService.query(
-      'SELECT * FROM users WHERE name = ?',
-      [username],
+      'SELECT * FROM users WHERE email = ? AND isDeleted = 0',
+      [email],
     );
 
-    // return users.find((user) => user.userName === username);   // finding matching username from static users
+    // return users.find((user) => user.email === email);   // finding matching email from static users
   }
 }
